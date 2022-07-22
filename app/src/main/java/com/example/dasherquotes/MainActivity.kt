@@ -2,6 +2,7 @@ package com.example.dasherquotes
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.Button
 import android.widget.TextView
 import kotlin.random.Random
 
@@ -13,11 +14,11 @@ const val laloName = "Lalo"
 const val malkiName = "Malki"
 const val pepeName = "Pepe"
 
-val names = arrayOf<String>(
+val names = arrayOf(
     arturoName, fernandoName, danielName, lucaName, laloName, malkiName, pepeName
 )
 
-val arturoQuotes = arrayOf<String>(
+val arturoQuotes = arrayOf(
     "Escupí el pepino que tenía en la boca.",
     "No sé, pero siento que voy a terminar vergueado en algún punto.",
     "Mi ojo me dice que tengo hambre.",
@@ -30,40 +31,40 @@ val arturoQuotes = arrayOf<String>(
     "Lo hizió.",
     "Si fuera pobre, sí"
 )
-val fernandoQuotes = arrayOf<String>(
+val fernandoQuotes = arrayOf(
     "Boba Nomb.",
     "For the Motherland.",
     "Jow blob.",
-    "Karoke?."
+    "Karoke?"
 )
-val danielQuotes = arrayOf<String>(
+val danielQuotes = arrayOf(
     "The Game: The Movie 2: The Pre-Sequel.",
     "e uir.",
     "Tengo que e uir.",
     "Se ve muy oscuro en la oscuridad."
 )
-val lucaQuotes = arrayOf<String>(
+val lucaQuotes = arrayOf(
     "Vergurado.",
     "qur gluglr gaste alv.",
     "Ya lleue.",
     "A mira, soy una bolsa.",
     "Si consigues información tienes más información"
 )
-val laloQuotes = arrayOf<String>(
+val laloQuotes = arrayOf(
     "Ichi coca.",
     "Ano-sumimasen...sobre?.",
     "No me gusta como se le ven los pelos de la punta."
 )
-val malkiQuotes = arrayOf<String>(
+val malkiQuotes = arrayOf(
     "¿¡Porqué no mejor me lo metes tu!?",
     "Quiero la gente lo tenga duro."
 )
-val pepeQuotes = arrayOf<String>(
+val pepeQuotes = arrayOf(
     "No jueguen destiny si les pica un huevo.",
     "Mujer con pito, my favourite."
 )
 
-val quotesPerPerson = hashMapOf<String, Array<String>>(
+val quotesPerPerson = hashMapOf(
     arturoName to arturoQuotes, fernandoName to fernandoQuotes,
     danielName to danielQuotes, lucaName to lucaQuotes, laloName to laloQuotes,
     malkiName to malkiQuotes, pepeName to pepeQuotes
@@ -76,11 +77,15 @@ class MainActivity : AppCompatActivity() {
 
         val dasherName = findViewById<TextView>(R.id.dasherName)
         val dasherQuote = findViewById<TextView>(R.id.dasherQuote)
+        val newQuoteBtn = findViewById<Button>(R.id.newQuoteButton)
 
-        val randomName = names[Random.nextInt(0, names.size)]
-        val randomQuote = quotesPerPerson[randomName]
+        newQuoteBtn.setOnClickListener {
+            val randomName = names[Random.nextInt(0, names.size)]
+            val randomQuote = quotesPerPerson[randomName]
 
-        dasherName.text = randomName
-        dasherQuote.text = randomQuote?.get(Random.nextInt(0, randomQuote.size)) ?: ""
+            dasherName.text = randomName
+            dasherQuote.text =
+                randomQuote?.get(Random.nextInt(0, randomQuote.size)) ?: ""
+        }
     }
 }
