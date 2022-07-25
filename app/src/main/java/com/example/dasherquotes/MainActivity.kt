@@ -1,10 +1,14 @@
 package com.example.dasherquotes
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import kotlin.random.Random
+import androidx.appcompat.app.AppCompatActivity
+import com.example.dasherquotes.quotes.api.APIService
+import com.example.dasherquotes.quotes.api.RetrofitHelper
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 const val arturoName = "Arturo"
 const val fernandoName = "Fernando"
@@ -80,12 +84,29 @@ class MainActivity : AppCompatActivity() {
         val newQuoteBtn = findViewById<Button>(R.id.newQuoteButton)
 
         newQuoteBtn.setOnClickListener {
-            val randomName = names[Random.nextInt(0, names.size)]
-            val randomQuote = quotesPerPerson[randomName]
-
-            dasherName.text = randomName
-            dasherQuote.text =
-                randomQuote?.get(Random.nextInt(0, randomQuote.size)) ?: ""
+            val samplesApi = RetrofitHelper.getInstance().create(APIService::class.java)
+            // new coroutine
+            CoroutineScope(Dispatchers.IO).launch {
+                val result = samplesApi.getGames()
+                runOnUiThread {
+                    dasherName.text =
+                        buildString {
+                            append(result.body()?.get(0)?.id)
+                            append("\n")
+                            append(result.body()?.get(0)?.author)
+                            append("\n")
+                            append(result.body()?.get(0)?.content)
+                        }
+                    dasherQuote.text =
+                        buildString {
+                            append(result.body()?.get(0)?.date)
+                            append("\n")
+                            append(result.body()?.get(0)?.created_at)
+                            append("\n")
+                            append(result.body()?.get(0)?.updated_at)
+                        }
+                }
+            }
         }
     }
 }
